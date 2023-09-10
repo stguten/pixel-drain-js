@@ -1,3 +1,4 @@
+
 import pixeldrain from "../config/axios.config.js";
 /**
  * Return all files from authenticated user
@@ -6,14 +7,14 @@ import pixeldrain from "../config/axios.config.js";
 async function getUserFiles() {
   try {
     const responseSet = await pixeldrain.get("/user/files");
-    console.log(responseSet.data);    
+    return responseSet.data;    
   } catch (error) {
     switch(error.response.status){
       case 401:
       case 500:
-        return new Error(error.response.data.message);
+        throw new Error(error.response.data.message);
       default:
-        return new Error("Erro desconhecido.");
+        throw new Error("Erro desconhecido.");
     }
   }    
 }
@@ -25,15 +26,16 @@ async function getUserFiles() {
 async function getUserLists() {
   try {
     const responseSet = await pixeldrain.get("/user/lists");
-    console.log(responseSet.data);
+    return responseSet.data;
   } catch (error) {
     switch(error.response.status){
       case 401:
       case 500:
-        return new Error(error.response.data.message);
-      default:
-        return new Error("Erro desconhecido.");
+        throw new Error(error.response.data.message);
+      default:        
+        throw new Error("Erro desconhecido.");
     }
+    
   }
 }
 

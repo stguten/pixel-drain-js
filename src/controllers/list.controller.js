@@ -16,11 +16,11 @@ async function getList(id) {
   } catch (error) {
     switch (error.response.status) {
       case 404:
-        return new Error(error.response.data.message.replace("entity", "list"));
+        throw new Error(error.response.data.message.replace("entity", "list"));
       case 500:
-        return new Error(error.response.data.message);
+        throw new Error(error.response.data.message);
       default:
-        return new Error("Erro desconhecido.");
+        throw new Error("Erro desconhecido.");
     }
   }
 }
@@ -33,10 +33,8 @@ async function getList(id) {
  * @returns {String} Return a id of list created
  */
 async function postList(title, anonymous, files) {
-  if (id === "" || id === undefined || id === null)
-    return new Error("Por favor verifique os parametros.");
-  if (!Array.isArray(files))
-    return new Error("Os arquivos devem estar listados em um array.");
+  if (id === "" || id === undefined || id === null) throw new Error("Por favor verifique os parametros.");
+  if (!Array.isArray(files)) throw new Error("Os arquivos devem estar listados em um array.");
   try {
     const list = await pixeldrain.post(`/list`, {
       title: title,
@@ -49,11 +47,11 @@ async function postList(title, anonymous, files) {
       case 413:        
       case 422:
       case 500:
-        return new Error(error.response.data.message);
+        throw new Error(error.response.data.message);
       default:
-        return new Error("Erro desconhecido.");
+        throw new Error("Erro desconhecido.");
     }
   }
 }
 
-export { getList, postList };
+export default { getList, postList };

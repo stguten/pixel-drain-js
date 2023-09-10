@@ -1,3 +1,5 @@
+'use strict';
+
 import { getFilenameFromContentDisposition, onProgress } from "../tools/download.tools.js";
 import pixeldrain from "../config/axios.config.js";
 import * as fs from "fs";
@@ -31,9 +33,9 @@ async function postFile(file, options){
             case 413:        
             case 422:
             case 500:
-              return new Error(error.response.data.message);
+                throw new Error(error.response.data.message);
             default:
-              return new Error("Erro desconhecido.");
+                throw new Error("Erro desconhecido.");
         }
     }
 }
@@ -64,9 +66,9 @@ async function putFile(file, options){
             case 413:        
             case 422:
             case 500:
-              return new Error(error.response.data.message);
+              throw new Error(error.response.data.message);
             default:
-              return new Error("Erro desconhecido.");
+              throw new Error("Erro desconhecido.");
         }
     }
 }
@@ -112,9 +114,9 @@ async function getFileById(folder, id, download){
             case 403:        
             case 404:
             case 500:
-              return new Error(error.response.data.message);
+              throw new Error(error.response.data.message);
             default:
-              return new Error("Erro desconhecido.");
+              throw new Error("Erro desconhecido.");
         }
     }
 }
@@ -136,9 +138,9 @@ async function getFileInfo(id){
             case 413:        
             case 422:
             case 500:
-              return new Error(error.response.data.message);
+              throw new Error(error.response.data.message);
             default:
-              return new Error("Erro desconhecido.");
+              throw new Error("Erro desconhecido.");
         }
     }    
 }
@@ -158,8 +160,10 @@ async function getFileInfo(id){
  * If a thumbnail cannot be generated you will get a 301 redirect to an image representing the type of the file.
  */
 async function getfileThumb(id, sizeX, sizeY){
-    if (id === "" || id === undefined || id === null) return new Error("Por favor verifique os parametros.");
-    if(sizeX != sizeY || (sizeX || sizeY < 16) || (sizeX || sizeY > 128)) return new Error("Tamanho informado invalido");
+    if (id === "" || id === undefined || id === null) throw new Error("Por favor verifique os parametros.");
+    if (sizeX != sizeY || (sizeX || sizeY < 16) || (sizeX || sizeY > 128)) throw new Error("Tamanho informado invalido");
+    if (sizeX % 16 != 0 || sizeY != 0) throw new Error("O valor precisa ser multiplo de 16.");
+
     try {
         const resultado = await pixeldrain.get(`/file/${id}/thumbnail?width=${sizeX}&height=${sizeY}`);
         return resultado.data;
@@ -168,9 +172,9 @@ async function getfileThumb(id, sizeX, sizeY){
             case 413:        
             case 422:
             case 500:
-              return new Error(error.response.data.message);
+              throw new Error(error.response.data.message);
             default:
-              return new Error("Erro desconhecido.");
+              throw new Error("Erro desconhecido.");
         }
     }
 }
@@ -181,7 +185,7 @@ async function getfileThumb(id, sizeX, sizeY){
  * @returns {String} A message with a status of file
  */
 async function deleteFile(id){
-    if (id === "" || id === undefined || id === null) return new Error("Por favor verifique os parametros.");
+    if (id === "" || typeof id != "string" ) return new Error("Por favor verifique os parametros.");
     try {
         const response = await pixeldrain.delete(`/file/${id}`);
         return response.data.message;
@@ -191,11 +195,11 @@ async function deleteFile(id){
             case 403:       
             case 404:
             case 500:
-              return new Error(error.response.data.message);
+              throw new Error(error.response.data.message);
             default:
-              return new Error("Erro desconhecido.");
+              throw new Error("Erro desconhecido.");
         }
     }
 }
 
-export {postFile, putFile, getFileById, getFileInfo, getfileThumb, deleteFile}
+export default {postFile, putFile, getFileById, getFileInfo, getfileThumb, deleteFile}
