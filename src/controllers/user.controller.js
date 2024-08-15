@@ -1,40 +1,37 @@
-import pixeldrain from "../config/axios.config.js";
-/**
- * Return all files from authenticated user
- * @returns {Object} Returns a JSON object with all user files.
- */
-async function getUserFiles() {
-  try {
-    const responseSet = await pixeldrain.get("/user/files");
-    console.log(responseSet.data);    
-  } catch (error) {
-    switch(error.response.status){
-      case 401:
-      case 500:
-        return new Error(error.response.data.message);
-      default:
-        return new Error("Erro desconhecido.");
-    }
-  }    
-}
 
-/**
- * Return all lists from authenticated user
- * @returns {Object} Returns a JSON object with all user lists.
- */
-async function getUserLists() {
-  try {
-    const responseSet = await pixeldrain.get("/user/lists");
-    console.log(responseSet.data);
-  } catch (error) {
-    switch(error.response.status){
-      case 401:
-      case 500:
-        return new Error(error.response.data.message);
-      default:
-        return new Error("Erro desconhecido.");
+import pixeldrain from "../config/axios.config.js";
+import { HttpStatusCodes } from "../enums/http.enum.js";
+
+export default class User {
+  constructor(token) {
+    this.token = token;
+  }
+
+  
+  async getUserFiles() {
+    try {
+      const responseSet = await pixeldrain.get("/user/files", {
+        headers: {
+          "Authorization": `Basic ${btoa(":" + this.token)}`
+        }
+      });
+      return responseSet.data;
+    } catch (error) {      
+      throw new Error(HttpStatusCodes[error.response.data.value]);
+    }
+  }
+
+  
+  async getUserLists() {
+    try {
+      const responseSet = await pixeldrain.get("/user/lists", {
+        headers: {
+          "Authorization": `Basic ${btoa(":" + this.token)}`
+        }
+      });
+      return responseSet.data;
+    } catch (error) {
+      throw new Error(HttpStatusCodes[error.response.data.value]);
     }
   }
 }
-
-export {getUserFiles, getUserLists}
