@@ -1,0 +1,21 @@
+export const HttpStatusCodes = {
+    "no_file": "The file does not exist or is empty.",
+    "internal": "An internal server error occurred.",
+    "file_too_large": "The file you tried to upload is too large",
+    "writing": "Something went wrong while writing the file to disk, the server may be out of storage space.",
+    "name_too_long": "File Name is too long, Max 255 characters allowed.",
+    "not_found": "The entity you requested could not be found",
+    "file_rate_limited_captcha_required": "This file is using too much bandwidth. For anonymous downloads a captcha is required now. The captcha entry is available on the download page",
+    "virus_detected_captcha_required": "This file has been marked as malware by our scanning systems. To avoid infecting other systems through automated downloads we require you to enter a captcha. The captcha entry is available on the download page",
+    "file_not_found": "File ID was not found in the database.",
+    "unauthorized": "You are not logged in.",
+    "forbidden": "This is not your file.",
+    "list_file_not_found": "File was not found in the database.",
+    "too_many_files": "This list contains too many files, max 10000 allowed.",
+    "json_parse_failed": "The JSON object in the request body could not be read.",
+    "title_too_long": "The title of this list is too long, max 300 characters allowed.",
+    "description_too_long": "The description of one of the files in the list is too long, max 3000 characters allowed.",
+    "cannot_create_empty_list": "You cannot make a list with no files.",
+    "list_not_found": "List ID was not found in the database.",
+    "authentication_required": "This request requires API authentication. Please provide an API key in the password field of HTTP Basic Access Authentication"
+};

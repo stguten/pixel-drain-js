@@ -1,22 +1,30 @@
 {
-  "name": "pd-js",
-  "version": "1.0.0",
-  "description": "Pixel drain package for pixeldrain.com API",
+  "name": "@stguten/pd-js",
+  "version": "1.2.0",
+  "description": "Pixel Drain package for pixeldrain.com API",
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon -r dotenv/config",
-    "start": "node -r dotenv/config index.js"
+    "start": "node index.js",
+    "dev": "nodemon"
   },
   "engines": {
-    "node": ">= 16",
-    "npm": ">= 8"
+    "node": ">= 20",
+    "npm": ">= 9"
   },
-  "keywords": ["pixel", "drain", "download", "file upload"],
+  "keywords": [
+    "pixel",
+    "drain",
+    "download",
+    "file upload"
+  ],
   "author": "Gutemberg a.k.a StGuten",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
-    "axios": "^1.4.0",
-    "dotenv": "^16.0.3"
+    "axios": "^1.7.4",
+    "dotenv": "^16.4.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4"
   }
 }
