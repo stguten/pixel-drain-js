@@ -7,29 +7,29 @@ export default class User {
     this.token = token;
   }
 
-  
+
   async getUserFiles() {
     try {
-      const responseSet = await pixeldrain.get("/user/files", {
+      const { data } = await pixeldrain.get("/user/files", {
         headers: {
-          "Authorization": `Basic ${btoa(":" + this.token)}`
+          "Authorization": `Basic ${Buffer.from(this.token).toString('base64')}`
         }
       });
-      return responseSet.data;
-    } catch (error) {      
+      return data;
+    } catch (error) {
       throw new Error(HttpStatusCodes[error.response.data.value]);
     }
   }
 
-  
+
   async getUserLists() {
     try {
-      const responseSet = await pixeldrain.get("/user/lists", {
+      const { data } = await pixeldrain.get("/user/lists", {
         headers: {
-          "Authorization": `Basic ${btoa(":" + this.token)}`
+          "Authorization": `Basic ${Buffer.from(this.token).toString('base64')}`
         }
       });
-      return responseSet.data;
+      return data;
     } catch (error) {
       throw new Error(HttpStatusCodes[error.response.data.value]);
     }

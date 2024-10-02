@@ -6,14 +6,21 @@ class PixelDrainApi {
     #list;
     #file;
     #user;
+    static instance;
+
     /**
      * Make a new instance of the PixelDrain API.
      * @param {String} Pixeldrain API token.
      */
     constructor(token) {
+        if (PixelDrainApi.instance) {
+            return PixelDrainApi.instance;
+        }
         this.#list = new List(token);
         this.#file = new File(token);
         this.#user = new User(token);
+
+        PixelDrainApi.instance = this;
     }
 
     /**
@@ -30,13 +37,12 @@ class PixelDrainApi {
 
     /**
      * Creates a list of files that can be viewed together on the file viewer page.
-     * @param {String} title 
-     * @param {boolean} anonymous 
-     * @param {Object} files 
+     * @param {String} title Name of the file to upload
+     * @param {Object} files File is not linked to user if true
      * @returns {String} Return a id of list created
      */
-    async postList(title, anonymous = false, files) {
-        return await this.#list.postList(title, anonymous, files);
+    async postList(title, files) {
+        return await this.#list.postList(title, files);
     }
 
     /**
@@ -46,8 +52,8 @@ class PixelDrainApi {
      * @param {Object} options Name of the file to upload and the boolean flag to set if the file is set or not to user
      * @returns {String} The ID of the newly uploaded file
      */
-    async postFile(file, nameFile, anonymous = false) {
-        return await this.#file.postFile(file, nameFile, anonymous);
+    async postFile(file, nameFile) {
+        return await this.#file.postFile(file, nameFile);
     }
 
     /**
@@ -56,8 +62,8 @@ class PixelDrainApi {
      * @param {Object} options Name of the file to upload and the boolean flag to set if the file is set or not to user
      * @returns {String} The ID of the newly uploaded file
      */
-    async putFile(file, nameFile, anonymous = false) {
-        return await this.#file.putFile(file, nameFile, anonymous);
+    async putFile(file, nameFile) {
+        return await this.#file.putFile(file, nameFile);
     }
 
     /**
@@ -101,13 +107,13 @@ class PixelDrainApi {
      * If a thumbnail cannot be generated for the file you will be redirected to a mime type image of 128x128 px.
      * 
      * @param {String} id ID of the file to get a thumbnail for
-     * @param {Number} sizeX Width of the thumbnail image
-     * @param {Number} sizeY Height of the thumbnail image
+     * @param {Number} width Width of the thumbnail image
+     * @param {Number} height Height of the thumbnail image
      * @returns A PNG image if a thumbnail can be generated. 
      * If a thumbnail cannot be generated you will get a 301 redirect to an image representing the type of the file.
      */
-    async getfileThumb(id, sizeX, sizeY) {
-        return await this.#file.getfileThumb(id, sizeX, sizeY);
+    async getfileThumb(id, width, height) {
+        return await this.#file.getfileThumb(id, width, height);
     }
 
     /**
@@ -136,6 +142,4 @@ class PixelDrainApi {
     }
 }
 
-const teste = new PixelDrainApi("24db3995-282d-4fe5-82cf-3baa953b4ce8");
-
-console.log(teste.getUserFiles().token);
+export default PixelDrainApi;

@@ -21,6 +21,7 @@
   "author": "Gutemberg a.k.a StGuten",
   "license": "MIT",
   "dependencies": {
+    "@stguten/form-data": "^4.0.0",
     "axios": "^1.7.4",
     "dotenv": "^16.4.5"
   },

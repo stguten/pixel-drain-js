@@ -8,27 +8,27 @@ export default class List {
 
 
   async getList(id) {
-    if (!!id) return new Error("Por favor verifique os parametros.");
+    if (!id) return new Error("Por favor verifique os parametros.");
     try {
-      const list = await pixeldrain.get(`/list/${id}`);
-      delete list.data.sucess;
-      return list.data;
+      const { data } = await pixeldrain.get(`/list/${id}`);
+      delete data.sucess;
+      return data;
     } catch (error) {
       throw new Error(HttpStatusCodes[error.response.data.value]);
     }
   }
 
 
-  async postList(title, anonymous = false, files) {
-    if (!!id) throw new Error("Por favor verifique os parametros.");
+  async postList(title, files) {
+    if (!id) throw new Error("Por favor verifique os parametros.");
     if (!Array.isArray(files)) throw new Error("Os arquivos devem estar listados em um array.");
     try {
-      const list = await pixeldrain.post(`/list`, {
+      const { data } = await pixeldrain.post(`/list`, {
         title: title,
         anonymous: anonymous,
         files: files,
       });
-      return list.data;
+      return data;
     } catch (error) {
       throw new Error(HttpStatusCodes[error.response.data.value]);
     }
